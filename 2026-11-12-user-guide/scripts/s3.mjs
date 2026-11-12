@@ -1,0 +1,10 @@
+import {open,shot,BASE} from './lib.mjs';
+const {b,p}=await open();
+await p.goto(BASE);await p.waitForTimeout(1000);
+await p.getByText('Fix in Settings').first().click();await p.waitForTimeout(1000);
+console.log(await p.locator('input').count());
+const inp=p.locator('input:visible');console.log(await inp.count());
+for(let i=0;i<await inp.count();i++)console.log(i,await inp.nth(i).getAttribute('placeholder'),await inp.nth(i).getAttribute('type'));
+await inp.nth(await inp.count()-1).fill('http://127.0.0.1:8000/v1');
+await p.getByText('Where models come from').click();await p.waitForTimeout(4000);await shot(p,'prov2');
+await b.close();

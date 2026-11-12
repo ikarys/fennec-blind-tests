@@ -1,0 +1,10 @@
+import {open,shot,BASE} from './lib.mjs';
+const {b,p}=await open();
+await p.goto(BASE+'/#/project/18e7244b27ad7621-22ae47-0');await p.waitForTimeout(2000);
+await shot(p,'pj3');
+console.log(await p.locator('button[title],a[title]').evaluateAll(e=>e.map(x=>x.title).slice(0,12)));await p.locator('[title="Open the editor"]').first().click();await p.waitForTimeout(2000);await shot(p,'ed1');console.log(p.url());
+await p.getByText('README.md').first().click();await p.waitForTimeout(1500);
+await p.getByTitle('Edit the file').first().click();await p.waitForTimeout(800);
+await p.locator('.cm-content, textarea').first().click();await p.keyboard.press('Control+End');await p.keyboard.type('\n\nUse add_todo to add an item.\n');await p.waitForTimeout(3500);await shot(p,'ed3');
+console.log((await p.innerText('body')).includes('Saved'));
+await b.close();

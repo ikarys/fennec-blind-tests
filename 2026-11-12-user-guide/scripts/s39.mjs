@@ -1,0 +1,15 @@
+import {open,shot,BASE} from './lib.mjs';
+const {b,p}=await open();
+await p.goto(BASE+'/#/project/18e7244b27ad7621-22ae47-0');await p.waitForTimeout(1500);
+await p.getByText('Tasks',{exact:true}).first().click();await p.waitForTimeout(1000);
+await p.getByText(/^Drafts/).first().click();await p.waitForTimeout(1500);
+await p.locator('[title="Open the task"]').first().click();await p.waitForTimeout(1500);
+await p.getByPlaceholder(/Why now/).fill('src/main.py holds the todo functions; tests live in tests/.');
+await p.getByText('Add a criterion').click();await p.waitForTimeout(800);
+await p.getByPlaceholder('A criterion, one line').fill('clear_todos() empties the list');
+await p.getByPlaceholder('Check').fill(`python3 -c "import sys; sys.path.insert(0,'src'); import main; main.add_todo('a'); main.clear_todos(); assert main.list_todos()==[]"`);
+await p.getByText('Context',{exact:true}).click();await p.waitForTimeout(1000);
+await shot(p,'t5');
+await p.getByRole('button',{name:'Ready',exact:true}).click();await p.waitForTimeout(2000);await shot(p,'t8');
+console.log((await p.innerText('body')).replace(/\n+/g,' | ').slice(0,400));
+await b.close();

@@ -1,0 +1,12 @@
+import {open,shot,BASE} from './lib.mjs';
+const {b,p}=await open();
+await p.goto(BASE+'/#/settings/providers');await p.waitForTimeout(2000);
+await p.mouse.click(1263,353);await p.waitForTimeout(1200);await shot(p,'pr2');
+console.log(await p.locator('input,textarea,select').evaluateAll(e=>e.map(x=>(x.ariaLabel||x.placeholder||x.name||x.type)+'='+x.value)));
+console.log((await p.innerText('body')).replace(/\n+/g,' | ').match(/Price.{0,300}/)?.[0]);
+const ins=p.locator('input[placeholder="—"]');console.log(await ins.count());
+await ins.nth(0).fill('0.3');await ins.nth(1).fill('0.03');await ins.nth(2).fill('0.6');
+await p.mouse.click(366,756);await p.waitForTimeout(1500);await shot(p,'pr3');
+await p.goto(BASE+'/#/insight');await p.waitForTimeout(2500);
+console.log((await p.innerText('body')).replace(/\n+/g,' | ').match(/Estimated cost.{0,60}/)?.[0]);
+await b.close();

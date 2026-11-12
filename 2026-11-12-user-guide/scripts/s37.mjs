@@ -1,0 +1,11 @@
+import {open,shot,BASE} from './lib.mjs';
+const {b,p}=await open();
+await p.goto(BASE+'/#/project/18e7244b27ad7621-22ae47-0');await p.waitForTimeout(1500);
+await p.getByText('Tasks',{exact:true}).first().click();await p.waitForTimeout(1500);await shot(p,'t1');
+await p.getByRole('button',{name:'New idea'}).first().click();await p.waitForTimeout(800);
+await p.locator('textarea').first().fill('Add a clear_todos function to src/main.py that empties the list, with a test in tests/test_main.py.');
+await shot(p,'t2');
+await p.getByRole('button',{name:'Add the idea'}).click();await p.waitForTimeout(1500);await shot(p,'t3');
+console.log((await p.innerText('body')).replace(/\n+/g,' | ').slice(100,700));
+console.log(await p.locator('button[title],button[aria-label]').evaluateAll(e=>e.map(x=>x.title||x.ariaLabel).slice(12)));
+await b.close();

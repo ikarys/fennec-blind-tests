@@ -1,0 +1,10 @@
+import {open,shot,BASE} from './lib.mjs';import {drive} from './drive.mjs';
+const {b,p}=await open();
+await p.goto(BASE);await p.waitForTimeout(1000);
+await p.getByRole('button',{name:/New session/}).first().click();await p.waitForTimeout(500);
+await p.getByText('todo',{exact:true}).last().click();await p.waitForTimeout(2000);
+console.log(p.url());
+await drive(p,'Add an add_todo(title) function to src/main.py that stores the to-do in an in-memory list, and make list_todos return that list.','fs5');
+console.log(p.url());
+console.log((await p.innerText('body')).slice(-900));
+await b.close();

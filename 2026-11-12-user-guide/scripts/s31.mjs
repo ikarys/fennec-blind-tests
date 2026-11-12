@@ -1,0 +1,12 @@
+import {open,shot,BASE} from './lib.mjs';
+const {b,p}=await open();
+await p.goto(BASE+'/');await p.waitForTimeout(2000);
+console.log((await p.getByRole('link').allInnerTexts()).join('|'));
+await p.getByText('todo',{exact:true}).first().click();await p.waitForTimeout(1500);
+await p.getByRole('button',{name:/Open the editor/}).or(p.getByRole('link',{name:/Open the editor/})).first().click();await p.waitForTimeout(2000);
+await shot(p,'ed1');console.log(p.url());
+await p.getByText('README.md').first().click();await p.waitForTimeout(1500);await shot(p,'ed2');
+await p.getByRole('button',{name:'Edit the file'}).or(p.getByTitle('Edit the file')).first().click();await p.waitForTimeout(800);
+const ta=p.locator('.cm-content, textarea').first();await ta.click();await p.keyboard.press('Control+End');await p.keyboard.type('\n\nUse add_todo to add an item.\n');await p.waitForTimeout(3000);await shot(p,'ed3');
+console.log((await p.innerText('body')).includes('Saved'));
+await b.close();
