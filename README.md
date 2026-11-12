@@ -49,23 +49,45 @@ trust), **NOTE** (worth knowing).
 
 ## Campaigns
 
-| Date | fennec commit | Campaign | What it covers | Verdict | Open findings |
-|---|---|---|---|---|---|
-| 2026-11-12 | be2723c9 | [User guide](2026-11-12-user-guide/report.md) | Every page of the guide in order: connect a model, first session, chat, workflows, plans, files, understanding, tasks, plugins, insight, settings | pass with friction | 0 |
-| 2026-11-12 | be2723c9 | [Critical review](2026-11-12-critical-review/report.md) | A sceptical senior developer's scored opinion on security, plan validation, reports, questions, integration and workflows, across feature, bug fix, refactor, vague and adversarial tasks | trust the gate, not yet the numbers around it | 14 |
-| 2026-11-12 | be2723c9 | Night mode (running) | Tasks board to night queue to morning report and review | | |
+Each campaign is a fixed spec in [`campaigns/`](campaigns/): its goal, its port, its runs, and the
+exact brief given to the tester agent, with placeholders for paths, commit and model. Replaying one
+gives the same test on a newer fennec.
 
-## Run a new campaign
+| Campaign | What it covers |
+|---|---|
+| [User guide](campaigns/user-guide.md) | Every page of the guide in order, followed literally by a newcomer: connect a model, first session, chat, workflows, plans, review gate, files, understanding, tasks, plugins, insight, settings |
+| [Critical review](campaigns/critical-review.md) | A sceptical senior developer's scored opinion on security, plan validation, reports, questions, integration and workflows, across a feature, a bug fix, a refactor and adversarial requests |
+| [Night mode](campaigns/night-mode.md) | The Tasks board unattended: ideas to sheets to the night queue, then the morning report, the agent's own decisions and the review of each task |
 
-Give a tester agent (the `vibecoding-blind-test` agent of the
-[Vibecoding Convention](https://github.com/ikarys/vibecoding-convention)) a brief that states the
-product, the persona, the tasks, the allowed services and the report path, and enforce:
+## Runs
 
-- only a copy of `docs/users` is readable; no fennec source, developer docs or tests;
+| Date | fennec commit | Campaign | Verdict | Open findings |
+|---|---|---|---|---|
+| 2026-11-12 | be2723c9 | [User guide](2026-11-12-user-guide/report.md) | pass with friction | 0 |
+| 2026-11-12 | be2723c9 | [Critical review](2026-11-12-critical-review/report.md) | trust the gate, not yet the numbers around it | 14 |
+| 2026-11-12 | be2723c9 | Night mode (running) | | |
+
+## Replay a campaign
+
+Needs [just](https://just.systems), a fennec checkout with its web dependencies installed, and an
+OpenAI-compatible model (`BLIND_MODEL_URL`, `BLIND_MODEL`; default the local qwen).
+
+```bash
+just                                   # list the campaigns
+just prepare ~/workspace/fennec        # build fennec, copy its user guide to /tmp/blind-docs
+just prompt night-mode ~/workspace/fennec > brief.txt
+```
+
+Give `brief.txt` to the `vibecoding-blind-test` agent of the
+[Vibecoding Convention](https://github.com/ikarys/vibecoding-convention). The brief enforces the
+rules every campaign shares:
+
+- only the copy of `docs/users` is readable; no fennec source, developer docs or tests;
 - no direct API calls: the UI through Playwright only;
 - its own fennec instance (`HOME`, `FENNEC_DB`, port) and its own test project;
 - any breach of these rules is disclosed in the report's brief.
 
-Add the folder `<date>-<campaign>/` and a row in the table above, then fill the decisions.
+The report lands in `<date>-<campaign>/`. Add a row to Runs and to the campaign's Runs list, then
+fill the decisions. A new campaign is a new file in `campaigns/` with the same shape and a free port.
 
 Maintainer: Ikarys <bikarys@proton.me>
