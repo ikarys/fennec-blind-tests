@@ -1,0 +1,10 @@
+import {open,shot,text} from './lib.mjs';
+const [,, sid]=process.argv;
+const {b,p}=await open('/#/s/'+sid);
+for (const el of await p.locator('text=check command (optional)').all()) await el.click().catch(()=>{});
+await p.waitForTimeout(500);
+await p.evaluate(()=>{const s=[...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+50&&getComputedStyle(e).overflowY!='visible');s.forEach(e=>e.scrollTop=0)});
+await shot(p,'12-plan-expanded');
+const t=await text(p); const i=t.indexOf('Plan\n'); console.log(t.slice(0,200)); 
+const j=t.indexOf('Add delete command to the todo CLI'); console.log(t.slice(j,j+3000));
+await b.close();

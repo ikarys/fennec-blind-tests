@@ -1,0 +1,10 @@
+import {open,shot,text} from './lib.mjs';
+const {b,p}=await open('/#/workflows');
+await p.getByText('Plan, build, verify').first().click(); await p.waitForTimeout(2000);
+await shot(p,'24-wf-pbv');
+await p.locator('button[title*="step by step"]').click(); await p.waitForTimeout(2000);
+await shot(p,'25-sbs-new'); console.log(p.url());
+await p.locator('textarea').fill('Bug: `todo done 7` or `todo done abc` crashes with a traceback. It should print "invalid index" and return 3, like delete does. Fix it, keeping the change minimal.');
+await p.keyboard.press('Enter'); await p.waitForTimeout(5000);
+console.log(p.url()); await shot(p,'26-sbs-started'); console.log((await text(p)).slice(-1500));
+await b.close();

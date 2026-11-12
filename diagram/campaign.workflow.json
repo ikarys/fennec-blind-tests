@@ -1,0 +1,272 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "How a fennec blind test campaign runs",
+    "quality_profile": "showcase",
+    "locale": "en",
+    "output": "diagram/campaign.html"
+  },
+  "lanes": [
+    {
+      "id": "inputs",
+      "label": "Inputs"
+    },
+    {
+      "id": "tester",
+      "label": "Tester agent (blind)"
+    },
+    {
+      "id": "fennec",
+      "label": "fennec under test"
+    },
+    {
+      "id": "outputs",
+      "label": "Campaign folder"
+    },
+    {
+      "id": "maintainer",
+      "label": "Maintainer",
+      "variant": "exception"
+    }
+  ],
+  "phases": [
+    {
+      "id": "prepare",
+      "label": "Prepare",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "run",
+      "label": "Run from the docs only",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "decide",
+      "label": "Report and decide",
+      "fromCol": 4,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "brief",
+    "agent",
+    "scripts",
+    "ui",
+    "report",
+    "decisions",
+    "fix"
+  ],
+  "nodes": [
+    {
+      "id": "docs",
+      "lane": "inputs",
+      "col": 0,
+      "type": "database",
+      "label": "User guide copy",
+      "sublabel": "docs/users only"
+    },
+    {
+      "id": "brief",
+      "lane": "inputs",
+      "col": 1,
+      "type": "external",
+      "label": "Campaign brief",
+      "sublabel": "persona, tasks, areas to judge"
+    },
+    {
+      "id": "agent",
+      "lane": "tester",
+      "col": 2,
+      "type": "backend",
+      "label": "Tester agent",
+      "sublabel": "never reads the source",
+      "tag": "Claude Sonnet"
+    },
+    {
+      "id": "scripts",
+      "lane": "tester",
+      "col": 3,
+      "type": "frontend",
+      "label": "Playwright scripts",
+      "sublabel": "headless Chromium"
+    },
+    {
+      "id": "build",
+      "lane": "fennec",
+      "col": 1,
+      "type": "backend",
+      "label": "fennec build",
+      "sublabel": "commit under test"
+    },
+    {
+      "id": "model",
+      "lane": "fennec",
+      "col": 2,
+      "type": "cloud",
+      "label": "Local model",
+      "sublabel": "qwen3.8-27b"
+    },
+    {
+      "id": "ui",
+      "lane": "fennec",
+      "col": 3,
+      "type": "frontend",
+      "label": "fennec UI",
+      "sublabel": "own HOME, store, port"
+    },
+    {
+      "id": "proj",
+      "lane": "fennec",
+      "col": 4,
+      "type": "database",
+      "label": "Test project",
+      "sublabel": "the tester's own git repo"
+    },
+    {
+      "id": "fix",
+      "lane": "fennec",
+      "col": 5,
+      "type": "security",
+      "label": "Fix in fennec",
+      "sublabel": "code or docs, with a test"
+    },
+    {
+      "id": "report",
+      "lane": "outputs",
+      "col": 4,
+      "type": "messagebus",
+      "label": "report.md",
+      "sublabel": "friction log, opinion, verdict"
+    },
+    {
+      "id": "evidence",
+      "lane": "outputs",
+      "col": 5,
+      "type": "database",
+      "label": "Evidence",
+      "sublabel": "scripts, shots, server.log"
+    },
+    {
+      "id": "decisions",
+      "lane": "maintainer",
+      "col": 4,
+      "type": "security",
+      "label": "Decisions",
+      "sublabel": "one per finding"
+    },
+    {
+      "id": "backlog",
+      "lane": "maintainer",
+      "col": 5,
+      "type": "messagebus",
+      "label": "fennec backlog",
+      "sublabel": "deferred findings"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-docs",
+      "from": "docs",
+      "to": "agent",
+      "label": "read only"
+    },
+    {
+      "id": "e-brief",
+      "from": "brief",
+      "to": "agent",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-write",
+      "from": "agent",
+      "to": "scripts",
+      "label": "writes",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-drive",
+      "from": "scripts",
+      "to": "ui",
+      "label": "clicks",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-build",
+      "from": "build",
+      "to": "model"
+    },
+    {
+      "id": "e-model",
+      "from": "model",
+      "to": "ui",
+      "label": "runs agents"
+    },
+    {
+      "id": "e-proj",
+      "from": "ui",
+      "to": "proj",
+      "label": "works in"
+    },
+    {
+      "id": "e-report",
+      "from": "ui",
+      "to": "report",
+      "label": "what happened",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-evidence",
+      "from": "report",
+      "to": "evidence",
+      "label": "backed by",
+      "variant": "dashed"
+    },
+    {
+      "id": "e-decide",
+      "from": "report",
+      "to": "decisions",
+      "label": "read",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-fix",
+      "from": "decisions",
+      "to": "fix",
+      "label": "fixed",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-backlog",
+      "from": "decisions",
+      "to": "backlog",
+      "label": "deferred",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Blindness rules",
+      "items": [
+        "Only the user guide and the running UI",
+        "No source, no API calls, own fennec instance",
+        "Any breach is disclosed in the report"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "What a decision can be",
+      "items": [
+        "fixed: the commit or test that proves it",
+        "deferred: a backlog idea in fennec",
+        "no change: the reason why"
+      ]
+    }
+  ]
+}

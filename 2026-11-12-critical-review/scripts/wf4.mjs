@@ -1,0 +1,12 @@
+import {open,shot,text} from './lib.mjs';
+const {b,p}=await open('/#/workflows');
+await p.locator('input[placeholder="new-workflow"]').fill('build-and-test');
+await p.getByRole('button',{name:/New workflow/}).click(); await p.waitForTimeout(1500);
+const cv=p.locator('.react-flow__pane');
+await p.getByText('Agent',{exact:true}).first().dragTo(cv,{targetPosition:{x:520,y:200}}); await p.waitForTimeout(500);
+await p.getByText('Shell',{exact:true}).first().dragTo(cv,{targetPosition:{x:520,y:330}}); await p.waitForTimeout(500);
+await p.getByText('End',{exact:true}).first().dragTo(cv,{targetPosition:{x:200,y:500}}); await p.waitForTimeout(500);
+await shot(p,'71-dropped');
+console.log(await p.locator('.react-flow__node').evaluateAll(e=>e.map(x=>x.innerText.replace(/\n/g,'|')+' '+JSON.stringify(x.getBoundingClientRect()))));
+console.log(await p.locator('.react-flow__handle').evaluateAll(e=>e.map(x=>(x.dataset.nodeid||'')+' '+(x.dataset.handleid||'')+' '+x.className.split(' ').filter(c=>/source|target/.test(c)).join(','))));
+await b.close();
