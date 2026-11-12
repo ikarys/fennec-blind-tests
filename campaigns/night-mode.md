@@ -9,7 +9,7 @@ The Tasks board end to end, unattended: ideas to sheets to the night queue, then
 
 ## Runs
 
-- [2026-11-12](../2026-11-12-night-mode/report.md), be2723c9 (running).
+- [2026-11-12](../2026-11-12-night-mode/report.md), be2723c9.
 
 ## Prompt
 

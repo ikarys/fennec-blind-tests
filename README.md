@@ -65,7 +65,7 @@ gives the same test on a newer fennec.
 |---|---|---|---|---|
 | 2026-11-12 | be2723c9 | [User guide](2026-11-12-user-guide/report.md) | pass with friction | 0 |
 | 2026-11-12 | be2723c9 | [Critical review](2026-11-12-critical-review/report.md) | trust the gate, not yet the numbers around it | 14 |
-| 2026-11-12 | be2723c9 | Night mode (running) | | |
+| 2026-11-12 | be2723c9 | [Night mode](2026-11-12-night-mode/report.md) | night mode does not yet deliver reviewable work in the morning | 15 |
 
 ## Replay a campaign
 

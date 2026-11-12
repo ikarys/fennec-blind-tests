@@ -1,0 +1,13 @@
+import {go} from './lib2.mjs'; import {shot,dump} from './lib.mjs';
+const {b,p}=await go();
+await p.goto('http://127.0.0.1:7803/#/project/18e73a834b4f480d-2aa8be-0/tasks'); await p.waitForTimeout(1200);
+await p.locator('button:right-of(:text("Night mode"))').first().click(); await p.waitForTimeout(800);
+const a=p.locator('input[type=number]').nth(0), t=p.locator('input[type=number]').nth(1);
+await a.fill('12'); await a.blur(); await p.waitForTimeout(500);
+await t.fill('400000'); await t.blur(); await p.waitForTimeout(1000);
+await shot(p,'20-caps');
+await p.goto('http://127.0.0.1:7803/'); await p.waitForTimeout(500);
+await p.goto('http://127.0.0.1:7803/#/project/18e73a834b4f480d-2aa8be-0/tasks'); await p.waitForTimeout(500);
+await p.locator('button:right-of(:text("Night mode"))').first().click(); await p.waitForTimeout(800);
+console.log(await p.locator('input[type=number]').evaluateAll(l=>l.map(e=>e.value)));
+await b.close();
